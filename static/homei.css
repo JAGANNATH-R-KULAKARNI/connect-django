@@ -1,0 +1,84 @@
+* {
+  font-family: Bungee;
+}
+
+.navbar {
+  background-color: black !important;
+}
+
+.parallax {
+  background-image: url("https://d2j6dbq0eux0bg.cloudfront.net/images/34717072/1618960719.jpg");
+
+  min-height: 700px;
+
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.nopadding {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 2px solid white !important;
+}
+
+.colimageonly {
+  opacity: 0.9 !important;
+  z-index: 0 !important;
+  max-height: 160px !important;
+}
+.colimageonly:hover {
+  opacity: 1 !important;
+}
+
+.nopaddingrow {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.only_mobile {
+  display: none;
+}
+
+.make_it_center {
+  display: flex;
+  justify-content: center;
+  width: 100% !important;
+}
+
+.impact_bro {
+  min-height: 500px !important;
+  background-image: url("https://nunomarinhomusic.files.wordpress.com/2015/06/6-talent.jpg");
+
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.information_vro {
+  display: flex;
+}
+
+@media only screen and (max-width: 450px) {
+  .login_button {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+  }
+  .colimageonly {
+    max-height: 60px !important;
+  }
+
+  .parallax {
+    min-height: 500px;
+  }
+  .information_vro {
+    display: none;
+  }
+  .only_mobile {
+    display: block;
+  }
+}
