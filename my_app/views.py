@@ -17,6 +17,18 @@ def home_page(request):
 
     return render(request,'my_app/home.html')
 
+def profileedit(request):
+    if(request.method == 'POST'):
+        print('here i am ')
+        pic=request.POST['profilepicedit']
+        bio=request.POST['editedtext']
+        user=Person.objects.filter(name=request.user.username)[0]
+        user.pic=pic
+        user.bio=bio
+        user.save()
+        
+    return redirect('/profile')
+
 def profile_page(request):
      
     if(request.method == 'POST'):
@@ -116,8 +128,26 @@ def profile_page(request):
                     i['time_posted']=str(int(ben))+ ' second ago'
                 else:
                     i['time_posted']=str(int(ben))+' seconds ago'    
+            
+    
+    temp2=[]
+    
+    for index,i in enumerate(temp):
+        
+        if(index % 3 == 0):
+            jag=[]
+            jag.append(temp[index])
+            if(index+1 < len(temp)):
+                jag.append(temp[index+1])
+  
+            if(index+2 < len(temp)):
+                jag.append(temp[index+2])
+  
                 
-    return render(request,'my_app/profile.html',{'posts' : temp})
+            temp2.append(jag)
+    
+    print(temp2)                
+    return render(request,'my_app/profile.html',{'posts' : temp2,'person' : person})
 
 
 def login_page(request):

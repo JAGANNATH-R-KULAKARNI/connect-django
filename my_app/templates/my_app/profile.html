@@ -92,6 +92,37 @@
 
         console.log(formData);
       }
+
+      function uploadImage1() {
+        var ele = document.getElementById("editprofilepic");
+        var target = document.getElementById("profilepicedit");
+        var uploadtext = document.getElementById("uploadtextedit");
+
+        console.log(ele.files[0]);
+
+        const formData = new FormData();
+        formData.append("file", ele.files[0]);
+        formData.append("upload_preset", "t1qhqiym");
+        axios
+          .post(
+            "https://api.cloudinary.com/v1_1/dcqnau1ur/image/upload",
+            formData
+          )
+          .then(function (response) {
+            console.log(response["data"]["secure_url"]);
+            target.value = response["data"]["secure_url"];
+            uploadtext.innerHTML = "Uploaded";
+
+            console.log(target);
+            console.log("success");
+          })
+          .catch(function (error) {
+            console.log("falure");
+            uploadtext.innerHTML = "Not Uploaded";
+          });
+
+        console.log(formData);
+      }
     </script>
     <nav
       class="navbar navbar-expand-lg navbar-dark bg-dark"
@@ -226,8 +257,8 @@
         <div class="row">
           <div class="col" style="display: flex; justify-content: center">
             <img
-              src="data:image/jpeg;base64,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"
-              style="border-radius: 50%; max-width: 100%"
+            src={{person.pic}}
+              style="border-radius: 50%; max-width: 100%;max-height:200px"
             />
           </div>
 
@@ -237,13 +268,13 @@
                 style="display: flex; justify-content: left; width: 100%"
                 class="paddingname"
               >
-                <p class="userinfoname">jagannath_r_k</p>
+                <p class="userinfoname">{{person.name}}</p>
               </div>
               <div
                 style="display: flex; justify-content: left; width: 100%"
                 class="paddingname"
               >
-                <p class="userinfobio">#This is awesome</p>
+                <p class="userinfobio">#{{person.bio}}</p>
               </div>
               <div class="micfd">
                 <div>
@@ -343,7 +374,7 @@
       </div>
     </form>
     </div>
-    <div
+      <div
       class="modal fade"
       id="editModal"
       tabindex="-1"
@@ -352,9 +383,17 @@
       aria-hidden="true"
     >
       <div class="modal-dialog" role="document">
+           <form  action="/profileedit" method="post">
+                     {% csrf_token %}
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Edit Profile</h5>
+            <h5
+              class="modal-title"
+              id="exampleModalLabel"
+              style="text-align: center; width: 100%"
+            >
+              Edit Profile
+            </h5>
             <button
               type="button"
               class="close"
@@ -364,25 +403,47 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">...</div>
+          <div class="modal-body">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Upload</span>
+              </div>
+              <div class="custom-file">
+                <input
+                  type="file"
+                  class="custom-file-input"
+                  id="editprofilepic"
+                  onchange="uploadImage1();"
+                />
+                <label
+                  class="custom-file-label"
+                  for="inputGroupFile01"
+                  id="uploadtextedit"
+                  >Change Profile Pic</label
+                >
+              </div>
+            </div>
+            <input type="hidden" id="profilepicedit" name="profilepicedit" />
+            <div class="mic">
+            <div class="form-group">
+    <input type="text" class="form-control" id="editedtext" name="editedtext" aria-describedby="emailHelp" placeholder="Enter New Bio">
+
+  </div>
+            </div>
+          </div>
           <div class="modal-footer">
             <button
               type="button"
               class="btn btn-secondary"
               data-dismiss="modal"
             >
-              Close
+              Discard
             </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              style="background-color: #003869 !important"
-            >
-              Save changes
-            </button>
+            <button type="submit" class="btn btn-primary"  style="background-color: #003869 !important">Save</button>
           </div>
         </div>
       </div>
+    </form>
     </div>
     <div class="mic">
       <button
@@ -408,30 +469,86 @@
     <br />
    <h2 style="width:100%;text-align:center;text-decoration:underline;font-weight:900">Posts</h2>
     <br />
-    <div style="width: 80%;
-  padding-left: 10%;
-  padding-right: 10%;
-  display:flex;
-  justify-content:center
-  ">
-    {% for i in posts %}
-  <div class="card" style="width: 18rem;">
-     <h5 class="card-title" style="width:100%;text-align:center;padding-top:5px;font-weight:900">{{i.person_name}}</h5>
-  <img class="card-img-top" src={{i.media_link}} alt="Card image cap">
+    <div>
+      <div style="width: 100%;" >
+    {% for i in posts  %}
+     <div class="container">
+  <div class="row" >
+   <div class="col-sm" style="display:flex;justify-content:center">
+ <div class="card" style="width: 18rem;">
+     <h5 class="card-title" style="width:100%;text-align:center;padding-top:5px;font-weight:900">{{i.0.person_name}}</h5>
+  <img class="card-img-top" src={{i.0.media_link}} alt="Card image cap" style="min-height:55%;max-height:60%">
   <div class="card-body">
    
-    <p class="card-text">{{i.text}}</p>
-     
-    <p>{{i.time_posted}}</p>
-   <div class='control-group' >
-      <input class='red-heart-checkbox' id='red-check2' type='checkbox'>
-      <label for='red-check2'>
-       
-      </label>
-    </div>
+    <p class="card-text" style="text-align:center">"{{i.0.text}}"</p>
+    
+  
+
+  <div class="mic cursorchnage">
+      <svg xmlns="http://www.w3.org/2000/svg"  width="25" height="25" style="margin-top:7px" fill="currentColor" class="bi bi-hand-thumbs-up" viewBox="0 0 16 16">
+  <path d="M8.864.046C7.908-.193 7.02.53 6.956 1.466c-.072 1.051-.23 2.016-.428 2.59-.125.36-.479 1.013-1.04 1.639-.557.623-1.282 1.178-2.131 1.41C2.685 7.288 2 7.87 2 8.72v4.001c0 .845.682 1.464 1.448 1.545 1.07.114 1.564.415 2.068.723l.048.03c.272.165.578.348.97.484.397.136.861.217 1.466.217h3.5c.937 0 1.599-.477 1.934-1.064a1.86 1.86 0 0 0 .254-.912c0-.152-.023-.312-.077-.464.201-.263.38-.578.488-.901.11-.33.172-.762.004-1.149.069-.13.12-.269.159-.403.077-.27.113-.568.113-.857 0-.288-.036-.585-.113-.856a2.144 2.144 0 0 0-.138-.362 1.9 1.9 0 0 0 .234-1.734c-.206-.592-.682-1.1-1.2-1.272-.847-.282-1.803-.276-2.516-.211a9.84 9.84 0 0 0-.443.05 9.365 9.365 0 0 0-.062-4.509A1.38 1.38 0 0 0 9.125.111L8.864.046zM11.5 14.721H8c-.51 0-.863-.069-1.14-.164-.281-.097-.506-.228-.776-.393l-.04-.024c-.555-.339-1.198-.731-2.49-.868-.333-.036-.554-.29-.554-.55V8.72c0-.254.226-.543.62-.65 1.095-.3 1.977-.996 2.614-1.708.635-.71 1.064-1.475 1.238-1.978.243-.7.407-1.768.482-2.85.025-.362.36-.594.667-.518l.262.066c.16.04.258.143.288.255a8.34 8.34 0 0 1-.145 4.725.5.5 0 0 0 .595.644l.003-.001.014-.003.058-.014a8.908 8.908 0 0 1 1.036-.157c.663-.06 1.457-.054 2.11.164.175.058.45.3.57.65.107.308.087.67-.266 1.022l-.353.353.353.354c.043.043.105.141.154.315.048.167.075.37.075.581 0 .212-.027.414-.075.582-.05.174-.111.272-.154.315l-.353.353.353.354c.047.047.109.177.005.488a2.224 2.224 0 0 1-.505.805l-.353.353.353.354c.006.005.041.05.041.17a.866.866 0 0 1-.121.416c-.165.288-.503.56-1.066.56z"/>
+</svg>
+<div style="width:60%">
+    <p style="font-size:13px;text-align:center;margin-top:10px">{{i.0.time_posted}}</p>
+</div>
+<button type="button" class="btn btn-success" style="max-height:40px">Comments</button>
+</div>
   </div>
 </div>
+    </div>
+    {% if i.1.person_name %}
+   <div class="col-sm" style="display:flex;justify-content:center">
+ <div class="card" style="width: 18rem;">
+     <h5 class="card-title" style="width:100%;text-align:center;padding-top:5px;font-weight:900">{{i.1.person_name}}</h5>
+  <img class="card-img-top" src={{i.1.media_link}} alt="Card image cap" style="min-height:55%;max-height:60%">
+  <div class="card-body">
+   
+    <p class="card-text" style="text-align:center">"{{i.1.text}}"</p>
+    
+  
+
+  <div class="mic cursorchnage">
+      <svg xmlns="http://www.w3.org/2000/svg"  width="25" height="25" style="margin-top:7px" fill="currentColor" class="bi bi-hand-thumbs-up" viewBox="0 0 16 16">
+  <path d="M8.864.046C7.908-.193 7.02.53 6.956 1.466c-.072 1.051-.23 2.016-.428 2.59-.125.36-.479 1.013-1.04 1.639-.557.623-1.282 1.178-2.131 1.41C2.685 7.288 2 7.87 2 8.72v4.001c0 .845.682 1.464 1.448 1.545 1.07.114 1.564.415 2.068.723l.048.03c.272.165.578.348.97.484.397.136.861.217 1.466.217h3.5c.937 0 1.599-.477 1.934-1.064a1.86 1.86 0 0 0 .254-.912c0-.152-.023-.312-.077-.464.201-.263.38-.578.488-.901.11-.33.172-.762.004-1.149.069-.13.12-.269.159-.403.077-.27.113-.568.113-.857 0-.288-.036-.585-.113-.856a2.144 2.144 0 0 0-.138-.362 1.9 1.9 0 0 0 .234-1.734c-.206-.592-.682-1.1-1.2-1.272-.847-.282-1.803-.276-2.516-.211a9.84 9.84 0 0 0-.443.05 9.365 9.365 0 0 0-.062-4.509A1.38 1.38 0 0 0 9.125.111L8.864.046zM11.5 14.721H8c-.51 0-.863-.069-1.14-.164-.281-.097-.506-.228-.776-.393l-.04-.024c-.555-.339-1.198-.731-2.49-.868-.333-.036-.554-.29-.554-.55V8.72c0-.254.226-.543.62-.65 1.095-.3 1.977-.996 2.614-1.708.635-.71 1.064-1.475 1.238-1.978.243-.7.407-1.768.482-2.85.025-.362.36-.594.667-.518l.262.066c.16.04.258.143.288.255a8.34 8.34 0 0 1-.145 4.725.5.5 0 0 0 .595.644l.003-.001.014-.003.058-.014a8.908 8.908 0 0 1 1.036-.157c.663-.06 1.457-.054 2.11.164.175.058.45.3.57.65.107.308.087.67-.266 1.022l-.353.353.353.354c.043.043.105.141.154.315.048.167.075.37.075.581 0 .212-.027.414-.075.582-.05.174-.111.272-.154.315l-.353.353.353.354c.047.047.109.177.005.488a2.224 2.224 0 0 1-.505.805l-.353.353.353.354c.006.005.041.05.041.17a.866.866 0 0 1-.121.416c-.165.288-.503.56-1.066.56z"/>
+</svg>
+<div style="width:60%">
+    <p style="font-size:13px;text-align:center;margin-top:10px">{{i.1.time_posted}}</p>
+</div>
+<button type="button" class="btn btn-success" style="max-height:40px">Comments</button>
+</div>
+  </div>
+</div>
+    </div>
+    {% endif %}
+    {% if i.2.person_name %}
+    <div class="col-sm" style="display:flex;justify-content:center">
+ <div class="card" style="width: 18rem;">
+     <h5 class="card-title" style="width:100%;text-align:center;padding-top:5px;font-weight:900">{{i.2.person_name}}</h5>
+  <img class="card-img-top" src={{i.2.media_link}} alt="Card image cap" style="min-height:55%;max-height:60%">
+  <div class="card-body">
+   
+    <p class="card-text" style="text-align:center">"{{i.2.text}}"</p>
+    
+  
+
+  <div class="mic cursorchnage">
+      <svg xmlns="http://www.w3.org/2000/svg"  width="25" height="25" style="margin-top:7px" fill="currentColor" class="bi bi-hand-thumbs-up" viewBox="0 0 16 16">
+  <path d="M8.864.046C7.908-.193 7.02.53 6.956 1.466c-.072 1.051-.23 2.016-.428 2.59-.125.36-.479 1.013-1.04 1.639-.557.623-1.282 1.178-2.131 1.41C2.685 7.288 2 7.87 2 8.72v4.001c0 .845.682 1.464 1.448 1.545 1.07.114 1.564.415 2.068.723l.048.03c.272.165.578.348.97.484.397.136.861.217 1.466.217h3.5c.937 0 1.599-.477 1.934-1.064a1.86 1.86 0 0 0 .254-.912c0-.152-.023-.312-.077-.464.201-.263.38-.578.488-.901.11-.33.172-.762.004-1.149.069-.13.12-.269.159-.403.077-.27.113-.568.113-.857 0-.288-.036-.585-.113-.856a2.144 2.144 0 0 0-.138-.362 1.9 1.9 0 0 0 .234-1.734c-.206-.592-.682-1.1-1.2-1.272-.847-.282-1.803-.276-2.516-.211a9.84 9.84 0 0 0-.443.05 9.365 9.365 0 0 0-.062-4.509A1.38 1.38 0 0 0 9.125.111L8.864.046zM11.5 14.721H8c-.51 0-.863-.069-1.14-.164-.281-.097-.506-.228-.776-.393l-.04-.024c-.555-.339-1.198-.731-2.49-.868-.333-.036-.554-.29-.554-.55V8.72c0-.254.226-.543.62-.65 1.095-.3 1.977-.996 2.614-1.708.635-.71 1.064-1.475 1.238-1.978.243-.7.407-1.768.482-2.85.025-.362.36-.594.667-.518l.262.066c.16.04.258.143.288.255a8.34 8.34 0 0 1-.145 4.725.5.5 0 0 0 .595.644l.003-.001.014-.003.058-.014a8.908 8.908 0 0 1 1.036-.157c.663-.06 1.457-.054 2.11.164.175.058.45.3.57.65.107.308.087.67-.266 1.022l-.353.353.353.354c.043.043.105.141.154.315.048.167.075.37.075.581 0 .212-.027.414-.075.582-.05.174-.111.272-.154.315l-.353.353.353.354c.047.047.109.177.005.488a2.224 2.224 0 0 1-.505.805l-.353.353.353.354c.006.005.041.05.041.17a.866.866 0 0 1-.121.416c-.165.288-.503.56-1.066.56z"/>
+</svg>
+<div style="width:60%">
+    <p style="font-size:13px;text-align:center;margin-top:10px">{{i.2.time_posted}}</p>
+</div>
+<button type="button" class="btn btn-success" style="max-height:40px">Comments</button>
+</div>
+  </div>
+</div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+ <br/>
      {% endfor %}
+    </div>
     </div>
     <br />
        <br />

@@ -3,6 +3,10 @@
   justify-content: center;
 }
 
+.cursorchnage:hover {
+  cursor: pointer;
+}
+
 .micfd {
   display: flex;
   justify-content: center;
@@ -76,6 +80,7 @@
   .bspace {
     width: 50px;
   }
+
   .userinfo {
     padding-top: 0px;
     display: block;
@@ -149,7 +154,6 @@
   content: "";
   position: absolute;
   margin-left: -28px;
-  margin-top: 3px;
   font-family: FontAwesome;
   font-size: 20px;
   content: "";
@@ -158,11 +162,6 @@
 }
 .red-heart-checkbox + label:hover:before {
   transform: scale(1.2);
-}
-
-html,
-body {
-  height: 100%;
 }
 
 .container {
