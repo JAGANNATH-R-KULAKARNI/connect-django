@@ -5,7 +5,10 @@ from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
 from django.core.mail import send_mail
 from my_app.models import Person
-
+from my_app.models import Posts
+from datetime import datetime
+from dateutil import parser
+from operator import itemgetter
 # Create your views here.
 
 def home_page(request):
@@ -15,10 +18,107 @@ def home_page(request):
     return render(request,'my_app/home.html')
 
 def profile_page(request):
+     
+    if(request.method == 'POST'):
+        pic=request.POST['profilepic']
+        caption=request.POST['caption']
+        print('bro here')
+        print(pic)
+        print(caption)
+        print(request.user.username)
+        now = datetime.now()
+        print(now.strftime('%Y/%m/%d %I:%M:%S'))
+        
+        try:
+            person=Person.objects.get(name=request.user.username)
+            print(person)
+            Posts.objects.create(person_name=person,text=caption,media_link=pic,time_posted=now,likes=0,comments={"comments" : []})
+            messages.success(request,'Successfully Created the post')
+        except:
+            messages.info(request,'Post Creation unsuccessful')
+            
+        return redirect('/profile')    
+    
     if not request.user.is_authenticated:
         return redirect('/login')
+    
+    person=Person.objects.get(name=request.user.username)
+    posts=Posts.objects.filter(person_name=person)
+    temp=[]
+    for i in posts:
+        spec={}
+        spec['person_name']=i.person_name
+        spec['text']=i.text
+        spec['media_link']=i.media_link
+        spec['time_posted']=i.time_posted
+        spec['likes']=i.likes
+        spec['comments']=i.comments
+        temp.append(spec)
+     
+    for i in temp:
+        print(i['person_name']) 
+    
+    temp.sort(key=itemgetter('time_posted'),reverse=True)
 
-    return render(request,'my_app/profile.html')
+    
+    for i in temp:
+        refe=str(datetime.now()-parser.parse(i['time_posted']))
+        print('---------------------')
+        print(datetime.now())
+        print(parser.parse(i['time_posted']))
+        print(i['time_posted']+ '  '+i['text'])
+        print(refe)
+        print('---------------------')
+        if(refe.find('day') != -1):
+            jag=''
+            for j in refe:
+                if(j == ' '):
+                    break
+                jag=jag+j
+                
+            if(int(str(jag)) == 1):
+                i['time_posted']=str(int(jag))+' day ago'    
+            else:
+                i['time_posted']=str(int(jag))+' days ago'
+                    
+        else:
+            jag=''
+            flag=0
+            done=0
+            for j in refe:
+                
+                if(j == ':'):
+                    if(int(jag) != 0):
+                        if(flag == 0):
+                            if(int(jag) == 1):
+                                i['time_posted']=str(int(jag))+' hour ago'
+                            else:
+                                i['time_posted']=str(int(jag))+' hours ago'   
+                            done=1    
+                            break
+                        else:
+                            if(int(jag) == 1):
+                                i['time_posted']=str(int(jag))+ ' minute ago'
+                            else:
+                                i['time_posted']=str(int(jag))+ ' minutes ago'     
+                            done=1    
+                            break
+                    jag=''     
+                    flag=flag+1       
+                    continue
+                
+                jag=jag+j
+            
+            if(done == 0):
+                ben=jag[0:2]
+                
+                if(int(ben) == 1):
+                    i['time_posted']=str(int(ben))+ ' second ago'
+                else:
+                    i['time_posted']=str(int(ben))+' seconds ago'    
+                
+    return render(request,'my_app/profile.html',{'posts' : temp})
+
 
 def login_page(request):
     
@@ -42,12 +142,14 @@ def login_page(request):
 def signup_page(request):
     
     if(request.method == 'POST'):
+        
         username=request.POST['username']
         email=request.POST['email']
         password=request.POST['password']
         bio=request.POST['bio']
         gender=request.POST['gender']
         age=request.POST['age']
+        pic=request.POST['profilepic']
         
         if(int(age) <= 0):
             messages.info(request,'Invalid Age !')
@@ -69,7 +171,7 @@ def signup_page(request):
         myuser.save()
 
         user=User.objects.get(username=myuser.username)
-        person=Person.objects.create(added_by=user,name=username,bio=bio,age=age,gender=gender)
+        person=Person.objects.create(added_by=user,name=username,bio=bio,age=age,gender=gender,pic=pic)
         person.save()
         
         print(person)
@@ -81,6 +183,7 @@ def signup_page(request):
         return redirect('/') 
        
     return render(request,'my_app/signup.html')
+
 
 
 def log_out(request):

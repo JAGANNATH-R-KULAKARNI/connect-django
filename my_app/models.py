@@ -1,3 +1,4 @@
+import pickletools
 from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
@@ -8,9 +9,10 @@ class Person(models.Model):
     bio=models.CharField(max_length=60)
     age=models.IntegerField()
     gender=models.CharField(max_length=10)
+    pic=models.CharField(max_length=1000,default='')
     
     def __str__(self):
-        return 'My name is '+self.name+' My age is '+str(self.age)
+        return '@'+self.name
     
     
 

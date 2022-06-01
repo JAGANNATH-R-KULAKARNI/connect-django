@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary',
+    'cloudinary_storage'
 ]
 
 MIDDLEWARE = [
@@ -134,3 +136,4 @@ EMAIL_HOST_USER = 'apikey'
 EMAIL_HOST_PASSWORD = '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'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+

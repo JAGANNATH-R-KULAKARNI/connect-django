@@ -38,6 +38,7 @@
     <style></style>
   </head>
   <body>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
       integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -61,6 +62,32 @@
       function closeModal() {
         $("#basicModal2").modal("toggle");
       }
+
+      function uploadImage(){
+      
+       var ele=document.getElementById('uploadprofilepic')
+      var target=document.getElementById('profilepic')
+
+      console.log(ele.files[0]) 
+
+      const formData=new FormData();
+      formData.append("file",ele.files[0]);
+      formData.append("upload_preset","t1qhqiym")
+      axios.post('https://api.cloudinary.com/v1_1/dcqnau1ur/image/upload',formData)
+    .then(function (response) {
+      console.log(response['data']['secure_url'])
+      target.value=response['data']['secure_url']
+      console.log(target)
+      console.log('success')
+    })
+    .catch(function (error) {
+    console.log('falure')
+    }); 
+ 
+      console.log(formData)
+
+      }
+
     </script>
     <nav
       class="navbar navbar-expand-lg navbar-dark bg-dark"
@@ -158,6 +185,8 @@
           height="72"
         />
         <h1 class="h3 mb-3 font-weight-normal">Register</h1>
+        
+
         {% if messages %} {% for message in messages %}
         <div
           class="modal fade"
@@ -248,7 +277,17 @@
           autofocus
           style="background-color: white !important; color: black !important"
         />
-        <br />
+        <div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text">Upload</span>
+  </div>
+  <div class="custom-file">
+    <input type="file" class="custom-file-input" id="uploadprofilepic" onchange="uploadImage();">
+    <label class="custom-file-label" for="inputGroupFile01" style="text-align:left;width:100%">Choose Profile Pic</label>
+  </div>
+</div>
+ <input type="hidden"  id="profilepic" name="profilepic">
+   
         <div style="display: flex; justify-content: center">
           <div class="form-check">
             <input
