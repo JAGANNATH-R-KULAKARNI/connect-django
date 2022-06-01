@@ -17,6 +17,7 @@ class Person(models.Model):
     
 
 class Posts(models.Model):
+    post_id=models.UUIDField()
     person_name=models.ForeignKey(Person,on_delete=models.CASCADE)
     text=models.CharField(max_length=1000)
     media_link=models.CharField(max_length=200)

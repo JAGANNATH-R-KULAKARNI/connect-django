@@ -9,6 +9,7 @@ from my_app.models import Posts
 from datetime import datetime
 from dateutil import parser
 from operator import itemgetter
+import uuid
 # Create your views here.
 
 def home_page(request):
@@ -23,10 +24,24 @@ def profileedit(request):
         pic=request.POST['profilepicedit']
         bio=request.POST['editedtext']
         user=Person.objects.filter(name=request.user.username)[0]
-        user.pic=pic
-        user.bio=bio
+        if(len(pic) != 0):
+            user.pic=pic
+        if(len(bio) != 0):    
+            user.bio=bio
         user.save()
+        if(len(pic) > 0 or len(bio) > 0):
+            messages.success(request,'Edited Successfully')
+        else:
+            messages.info(request,'Edit Something')    
         
+    return redirect('/profile')
+
+def profilelikes(request,post_id):
+
+    print('yo baby')    
+    print(post_id)
+    post=Posts.objects.filter(post_id=post_id)[0]
+    post.likes=post.likes+1
     return redirect('/profile')
 
 def profile_page(request):
@@ -44,7 +59,7 @@ def profile_page(request):
         try:
             person=Person.objects.get(name=request.user.username)
             print(person)
-            Posts.objects.create(person_name=person,text=caption,media_link=pic,time_posted=now,likes=0,comments={"comments" : []})
+            Posts.objects.create(post_id=uuid.uuid4(),person_name=person,text=caption,media_link=pic,time_posted=now,likes=0,comments={"comments" : []})
             messages.success(request,'Successfully Created the post')
         except:
             messages.info(request,'Post Creation unsuccessful')
@@ -65,6 +80,8 @@ def profile_page(request):
         spec['time_posted']=i.time_posted
         spec['likes']=i.likes
         spec['comments']=i.comments
+        spec['post_id']=i.post_id
+        spec['likesfun']='profilelikes/'+str(i.post_id)
         temp.append(spec)
      
     for i in temp:

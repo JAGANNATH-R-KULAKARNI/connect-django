@@ -6,6 +6,7 @@ urlpatterns=[
         path('login',views.login_page,name='login_page'),
            path('profile',views.profile_page,name='profile_page'),
            path('profileedit',views.profileedit,name='profileedit'),
+           path('profilelikes/<post_id>',views.profilelikes,name='profilelikes'),
            path('signup',views.signup_page,name='signup_page'),
       path('logout',views.log_out,name='logout_page'),
 ]
