@@ -129,12 +129,17 @@
        var commentsfooter=document.getElementById('commentsfooter')
        var comments=document.getElementById('comments'+index)
        var commentssection=document.getElementById('commentsbro')
+      var post_id=document.getElementById('post_id_0')
+      var post_id_modal=document.getElementById('post_id_of_modal')
 
        commentsfooter.innerHTML=caption.innerHTML
        commentssection.innerHTML=comments.innerHTML
+      post_id_modal.value=post_id.value
 
        console.log(caption.innerHTML)
        console.log(comments.innerHTML)
+       console.log(post_id.value)
+       console.log(post_id_modal)
      }
 
     </script>
@@ -482,6 +487,8 @@
     </div>
     <br />
     <div class="modal fade" id="commentssection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <form action="/comments" method="post">
+        {%csrf_token%}
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header"> 
@@ -490,12 +497,14 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <input type="hidden" name="post_id_of_modal" id="post_id_of_modal"/>
       <div class="modal-body">
       <div class="form-group" style="display:flex;justify-content:center">
-    <input type="text" class="form-control" id="commentext" name="commentext" aria-describedby="emailHelp" placeholder="Write a comment...">
-  <button type="button" class="btn btn-primary" style="background-color:#003869">Post</button>
+    <input type="text" class="form-control" id="commentext" name="commentext" aria-describedby="emailHelp" required placeholder="Write a comment...">
+  <button type="submit" class="btn btn-primary" style="background-color:#003869">Post</button>
   </div>
   <br/>
+  <input type="hidden" id="post_id_modal" name="post_id_modal"/>
   <div class="mic" id="commentsbro">
 
   </div>
@@ -507,6 +516,7 @@
 </div>
     </div>
   </div>
+</form>
 </div>
    <h2 style="width:100%;text-align:center;text-decoration:underline;font-weight:900">Posts</h2>
     <br />
@@ -536,6 +546,7 @@
 </svg>
 {% endif %}
 </a>
+<input  type="hidden" value="{{i.0.post_id}}" id="post_id_0"/>
 <div style="display:none" id="comments0">
   <div style="display:block;justify-content:center">
 {% for i in i.0.comments%}

@@ -53,6 +53,24 @@ def profilelikes(request,post_id):
     
     return redirect('/profile')
 
+def comments_page(request):
+     
+    if(request.method == 'POST'):
+        comment=request.POST['commentext']
+        post_id=request.POST['post_id_of_modal']
+        print('*********************')
+        print(comment)
+        print(post_id)
+        print('*********************')
+        post=Posts.objects.filter(post_id=post_id)[0]
+        temp=post.comments['comments']
+        temp.append({"by" : request.user.username, "c" : comment})
+        post.comments['comments']=temp
+        post.save()
+        messages.success(request,'You commented on '+str(post.person_name)+ ' post')
+        print(post)
+    return redirect('/profile')
+
 def profile_page(request):
      
     if(request.method == 'POST'):
