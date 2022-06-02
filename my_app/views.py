@@ -41,7 +41,16 @@ def profilelikes(request,post_id):
     print('yo baby')    
     print(post_id)
     post=Posts.objects.filter(post_id=post_id)[0]
-    post.likes=post.likes+1
+    print(post.liked_by['liked_by'])
+    temp=post.liked_by['liked_by']
+    if(request.user.username in temp):
+        temp.remove(request.user.username)
+    else:
+        temp.append(request.user.username)
+    post.liked_by['liked_by']=temp
+    post.save()
+    print(len(post.liked_by['liked_by']))
+    
     return redirect('/profile')
 
 def profile_page(request):
@@ -59,7 +68,7 @@ def profile_page(request):
         try:
             person=Person.objects.get(name=request.user.username)
             print(person)
-            Posts.objects.create(post_id=uuid.uuid4(),person_name=person,text=caption,media_link=pic,time_posted=now,likes=0,comments={"comments" : []})
+            Posts.objects.create(post_id=uuid.uuid4(),person_name=person,text=caption,media_link=pic,time_posted=now,likes=0,liked_by={"liked_by" : []},comments={"comments" : []})
             messages.success(request,'Successfully Created the post')
         except:
             messages.info(request,'Post Creation unsuccessful')
@@ -78,10 +87,15 @@ def profile_page(request):
         spec['text']=i.text
         spec['media_link']=i.media_link
         spec['time_posted']=i.time_posted
-        spec['likes']=i.likes
-        spec['comments']=i.comments
+        spec['likes']=len(i.liked_by['liked_by'])
+        spec['comments']=i.comments['comments']
         spec['post_id']=i.post_id
         spec['likesfun']='profilelikes/'+str(i.post_id)
+        if(request.user.username in i.liked_by['liked_by']):
+            spec['liked']=True
+        else:
+            spec['liked']=False
+                
         temp.append(spec)
      
     for i in temp:

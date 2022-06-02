@@ -23,6 +23,7 @@ class Posts(models.Model):
     media_link=models.CharField(max_length=200)
     time_posted=models.CharField(max_length=100)
     likes=models.IntegerField()
+    liked_by=models.JSONField()
     comments=models.JSONField()
     
     
