@@ -124,9 +124,8 @@
         console.log(formData);
       }
 
-      function loadComments(refe){
-       
-       console.log(refe.name)
+     function loadComments(refe){
+console.log(refe.name)
 
        var caption=document.getElementById('captionbro'+refe.name)
        var commentsfooter=document.getElementById('commentsfooter')
@@ -184,8 +183,8 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="/profile"
-              >Profile <span class="sr-only">(current)</span></a
+            <a class="nav-link" href="/"
+              >Home <span class="sr-only">(current)</span></a
             >
           </li>
           <li class="nav-item active">
@@ -223,11 +222,11 @@
           <div class="login_button">
             <button class="btn btn-outline-success my-2 my-sm-0">
               {% if request.user.is_authenticated %}
-              <a href="logout" style="text-decoration: none; color: inherit">
+              <a href="../logout" style="text-decoration: none; color: inherit">
                 Logout
               </a>
               {% else %}
-              <a href="login" style="text-decoration: none; color: inherit">
+              <a href="../login" style="text-decoration: none; color: inherit">
                 Login
               </a>
               {% endif %}
@@ -271,72 +270,57 @@
       </div>
     </div>
     {% endfor %} {% endif %}
-    <br/>
-    <br/>
-    <br/>
-{% if nopeople != 0 %}
-    <h2 style="width:100%;text-align:center;text-decoration:underline;font-weight:900;padding-top:50px">Follow People</h2>
-    <div style="display:flex;justify-content:center;">
-      <a  href="#carouselExampleIndicators" role="button" data-slide="prev">
-    <button type="button" class="btn btn-primary" style="margin-top:20px;background-color:#003869">< Prev </button>
-  </a>
-  <a  href="#carouselExampleIndicators" role="button" data-slide="next">
+    <div
+      style="display: flex; justify-content: center; width: 100%"
+      class="topinfo"
+    >
+      <div class="container" style="width: 100%">
+        <div class="row">
+          <div class="col" style="display: flex; justify-content: center">
+            <img
+            src={{person.pic}}
+              style="border-radius: 50%; max-width: 100%;max-height:200px"
+            />
+          </div>
 
-        <button type="button" class="btn btn-primary" style="margin-top:20px;background-color:#003869">Next ></button>
-  </a>
-</div>
-    <div style="width:100%;display:flex;justify-content:center;padding-top:20px;height:340px">
-    <br/>
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="1500">
-
-  <div class="carousel-inner">
-    {% for i in people%}
-    {% if i.p_index == 0 %}
-    <div class="carousel-item active">
-   <div class="card" style="width: 18rem;max-height:300px;min-height:300px">
-  
-      <h5 class="card-title" style="width:100%;text-align:center;padding-top:5px;font-weight:900">@{{i.name}}</h5>
-   
-  <img class="card-img-top" src="{{i.pic}}" alt="Card image cap" style="min-height:50%;max-height:50%">
-  <div class="card-body">
-    <p class="card-text" style="text-align:center">#{{i.bio}}</p>
-  </div>
-   <div style="display:flex;justify-content:center;margin-top:0px">
-     <a href="{{i.forfollow}}" style="width:50%">
-    <button type="button" class="btn btn-success"  style="background-color:#003869;width:100%">Follow</button>
-</a>
-<a href="{{i.forview}}" style="width:50%">
-       <button type="button" class="btn btn-dark" style="background-color:#003869;width:100%">Profile</button>
-       <a>
-       </div>
-</div> </div>
-{% else %}
-  <div class="carousel-item">
-   <div class="card" style="width: 18rem;max-height:300px;min-height:300px">
-    
-      <h5 class="card-title" style="width:100%;text-align:center;padding-top:5px;font-weight:900">@{{i.name}}</h5>
-        
-  <img class="card-img-top" src="{{i.pic}}" alt="Card image cap" style="min-height:50%;max-height:50%">
-  <div class="card-body">
-    <p class="card-text">#{{i.bio}} </p>
-    
-  </div>
-     <div style="display:flex;justify-content:center;margin-top:0px">
-          <a href="{{i.forfollow}}" style="width:50%">
-    <button type="button" class="btn btn-success"  style="background-color:#003869;width:100%">Follow</button>
-          </a>
-          <a href="{{i.forview}}" style="width:50%">
-       <button type="button" class="btn btn-dark" style="background-color:#003869;width:100%">Profile</button>
-          </a>
-       </div>
-</div> </div>
-{% endif %}
-   {% endfor %}
-  </div>
-
-</div>
- </div>
-{% endif %}
+          <div class="col mic">
+            <div class="row userinfo">
+              <div
+                style="display: flex; justify-content: left; width: 100%"
+                class="paddingname"
+              >
+                <p class="userinfoname">{{person.name}}</p>
+              </div>
+              <div
+                style="display: flex; justify-content: left; width: 100%"
+                class="paddingname"
+              >
+                <p class="userinfobio">#{{person.bio}}</p>
+              </div>
+              <div class="micfd">
+                <div>
+                  <p class="userinfop">
+                    Posts <span class="userinfop0">{{nop}}</span>
+                  </p>
+                </div>
+                <div class="userinfowidth"></div>
+                <div>
+                  <p class="userinfop">
+                    Followers <span class="userinfop0">{{followers}}</span>
+                  </p>
+                </div>
+                <div class="userinfowidth"></div>
+                <div>
+                  <p class="userinfop">
+                    Following <span class="userinfop0">{{following}}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <br />
     <div
       class="modal fade"
@@ -347,7 +331,7 @@
       aria-hidden="true"
     >
       <div class="modal-dialog" role="document">
-           <form  action="/" method="post">
+           <form  action="/profile" method="post">
                      {% csrf_token %}
         <div class="modal-content">
           <div class="modal-header">
@@ -405,8 +389,7 @@
             >
               Discard
             </button>
-            <button type="submit" class="btn btn-primary"  style="background-color: #003869 !important">
-               Post</button>
+            <button type="submit" class="btn btn-primary"  style="background-color: #003869 !important">Post</button>
           </div>
         </div>
       </div>
@@ -483,12 +466,36 @@
       </div>
     </form>
     </div>
-
+    <div class="mic">
+         {% if flag %}
+      <button
+        type="button"
+        class="btn btn-primary buttonsize"
+        style="background-color: #28A745 !important"
+      >
+     
+     Following
+     </button>
+     {%else %}
+     <a href="{{forfollowing}}" >
+    <button
+        type="button"
+        class="btn btn-primary buttonsize"
+        style="background-color: #003869 !important"
+      >
+     
+     Follow
+     </button>
+    </a>
+     {%endif %}
+      
+ 
+    </div>
     <br />
     <div class="modal fade" id="commentssection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <form action="/comments" method="post">
         {%csrf_token%}
-        <input type="hidden" name="which_page_comment" value="home"/>
+           <input type="hidden" name="which_page_comment" value="profile_u"/>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header"> 
@@ -518,32 +525,16 @@
   </div>
 </form>
 </div>
-   <h2 style="width:100%;text-align:center;text-decoration:underline;font-weight:900">Recent Posts</h2>
-   <br/>
-       <div class="mic">
-      <button
-        type="button"
-        class="btn btn-primary buttonsize"
-        style="background-color: #003869 !important"
-        data-toggle="modal"
-        data-target="#exampleModal"
-      >
-        Create a Post
-      </button>
-
-    </div>
+   <h2 style="width:100%;text-align:center;text-decoration:underline;font-weight:900">Posts</h2>
     <br />
-    <br/>
     <div>
       <div style="width: 100%;" >
     {% for i in posts  %}
      <div class="container">
   <div class="row" >
-   <div class="col-sm" style="display:flex;justify-content:center;max-height:370px">
+   <div class="col-sm" style="display:flex;justify-content:center">
  <div class="card" style="width: 18rem;">
-   <a href="{{i.0.forview}}" style="color:black;text-decoration:underline">
      <h5 class="card-title" style="width:100%;text-align:center;padding-top:5px;font-weight:900">{{i.0.person_name}}</h5>
-   </a>
   <img class="card-img-top" src={{i.0.media_link}} alt="Card image cap" style="min-height:55%;max-height:60%">
   <div class="card-body">
    
@@ -580,8 +571,7 @@
 <div style="width:60%">
     <p style="font-size:13px;text-align:center;margin-top:10px">{{i.0.time_posted}}</p>
 </div>
-<button type="button" class="btn btn-success" style="max-height:40px" data-toggle="modal" data-target="#commentssection"
- onclick="loadComments(this);" name="{{i.0.count}}">
+<button type="button" class="btn btn-success" style="max-height:40px" data-toggle="modal" data-target="#commentssection" onclick="loadComments(this);" name="{{i.0.count}}">
   Comments  <span class="badge badge-light">{{i.0.commentslen}}</span>
 
 </button>
@@ -590,11 +580,9 @@
 </div>
     </div>
     {% if i.1.person_name %}
-   <div class="col-sm" style="display:flex;justify-content:center;max-height:370px">
+   <div class="col-sm" style="display:flex;justify-content:center">
  <div class="card" style="width: 18rem;">
-   <a href="{{i.1.forview}}" style="color:black;text-decoration:underline">
      <h5 class="card-title" style="width:100%;text-align:center;padding-top:5px;font-weight:900">{{i.1.person_name}}</h5>
-      </a>
   <img class="card-img-top" src={{i.1.media_link}} alt="Card image cap" style="min-height:55%;max-height:60%">
   <div class="card-body">
    
@@ -631,8 +619,7 @@
 <div style="width:60%">
     <p style="font-size:13px;text-align:center;margin-top:10px">{{i.1.time_posted}}</p>
 </div>
-<button type="button" class="btn btn-success" style="max-height:40px" data-toggle="modal" data-target="#commentssection" 
-onclick="loadComments(this);" name="{{i.1.count}}">
+<button type="button" class="btn btn-success" style="max-height:40px" data-toggle="modal" data-target="#commentssection" onclick="loadComments(this);" name="{{i.1.count}}">
   Comments  <span class="badge badge-light">{{i.1.commentslen}}</span></button>
 </div>
   </div>
@@ -640,11 +627,9 @@ onclick="loadComments(this);" name="{{i.1.count}}">
     </div>
     {% endif %}
     {% if i.2.person_name %}
-    <div class="col-sm" style="display:flex;justify-content:center;max-height:370px">
+    <div class="col-sm" style="display:flex;justify-content:center">
  <div class="card" style="width: 18rem;">
-   <a href="{{i.2.forview}}" style="color:black;text-decoration:underline">
      <h5 class="card-title" style="width:100%;text-align:center;padding-top:5px;font-weight:900">{{i.2.person_name}}</h5>
-   </a>
   <img class="card-img-top" src={{i.2.media_link}} alt="Card image cap" style="min-height:55%;max-height:60%">
   <div class="card-body">
    
@@ -681,8 +666,7 @@ onclick="loadComments(this);" name="{{i.1.count}}">
 <div style="width:60%">
     <p style="font-size:13px;text-align:center;margin-top:10px">{{i.2.time_posted}}</p>
 </div>
-<button type="button" class="btn btn-success" style="max-height:40px" data-toggle="modal" data-target="#commentssection" 
-onclick="loadComments(this);" name="{{i.2.count}}">
+<button type="button" class="btn btn-success" style="max-height:40px" data-toggle="modal" data-target="#commentssection" onclick="loadComments(this);" name="{{i.2.count}}">
   Comments  <span class="badge badge-light">{{i.2.commentslen}}</span>
 </button>
 </div>
@@ -735,7 +719,7 @@ onclick="loadComments(this);" name="{{i.2.count}}">
             </div>
           </div>
         </div>
-       
+     
       <div class="copyright-area">
         <div class="container">
           <div class="row">

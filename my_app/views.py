@@ -66,6 +66,7 @@ def home_page(request):
         spec['forcaption']='captionbro'+str(count)
         spec['forPostId']='post_id_'+str(count)
         spec['forComments']='comments_id_'+str(count)
+        spec['forview']='/profile_u/'+str(i.person_name)[1:]
         count=count+1
         if(request.user.username in i.liked_by['liked_by']):
             spec['liked']=True
@@ -170,7 +171,7 @@ def home_page(request):
         lol['status']=i.status 
         lol['p_index']=p_index
         lol['forfollow']='/follow/'+i.name
-        
+        lol['forview']='/profile_u/'+str(i.name)
         if(request.user.username in i.status['status']['followers']):
             continue
                 
@@ -200,6 +201,27 @@ def follow_person(request,username):
         messages.info(request,'Something went wrong')
     
     return redirect('/')
+
+def follow_person2(request,username):
+    follower=Person.objects.filter(name=request.user.username)[0]
+    followee=Person.objects.filter(name=username)[0]
+    
+    try:
+        fw=follower.status['status']['following']
+        fw.append(username)
+        follower.status['status']['following']=fw
+        
+        fl=followee.status['status']['followers']
+        fl.append(request.user.username)
+        followee.status['status']['followers']=fl
+        
+        follower.save()
+        followee.save()
+        messages.success(request,'You just followed '+username)
+    except:
+        messages.info(request,'Something went wrong')
+    
+    return redirect('/profile_u/'+username)
 
 def profileedit(request):
     if(request.method == 'POST'):
@@ -235,6 +257,23 @@ def profilelikes(request,post_id):
     print(len(post.liked_by['liked_by']))
     
     return redirect('/profile')
+
+def profilelikes2(request,post_id):
+    
+    print('yo baby')    
+    print(post_id)
+    post=Posts.objects.filter(post_id=post_id)[0]
+    print(post.liked_by['liked_by'])
+    temp=post.liked_by['liked_by']
+    if(request.user.username in temp):
+        temp.remove(request.user.username)
+    else:
+        temp.append(request.user.username)
+    post.liked_by['liked_by']=temp
+    post.save()
+    print(len(post.liked_by['liked_by']))
+    
+    return redirect('/profile_u/'+str(post.person_name)[1:])
 
 def homelikes(request,post_id):
     
@@ -273,6 +312,8 @@ def comments_page(request):
         print(post)
         if(ctype == 'home'):
             return redirect('/')
+        elif(ctype == 'profile_u'):
+            return redirect('/profile_u/'+str(post.person_name)[1:])
         else:
             return redirect('/profile')
     return redirect('/profile')
@@ -413,6 +454,133 @@ def profile_page(request):
     return render(request,'my_app/profile.html',{'posts' : temp2,'person' : person,'nop' : len(temp),
       'following' : len(person.status['status']['following']),
       'followers' : len(person.status['status']['followers'])
+      })
+
+
+def profile_page_username(request,username):
+     
+    
+    if not request.user.is_authenticated:
+        return redirect('/login')
+    
+    person=Person.objects.get(name=username)
+    posts=Posts.objects.filter(person_name=person)
+    flag_present=False
+    
+    if(request.user.username in person.status['status']['followers']):
+        flag_present=True
+        
+    temp=[]
+    count=0
+    for i in posts:
+        spec={}
+        spec['person_name']=i.person_name
+        spec['text']=i.text
+        spec['media_link']=i.media_link
+        spec['time_posted']=i.time_posted
+        spec['likes']=len(i.liked_by['liked_by'])
+        spec['comments']=i.comments['comments']
+        spec['commentslen']=len(i.comments['comments'])
+        spec['post_id']=i.post_id
+        spec['likesfun']='../profilelikes2/'+str(i.post_id)
+        spec['count']=count
+        spec['forcaption']='captionbro'+str(count)
+        spec['forPostId']='post_id_'+str(count)
+        spec['forComments']='comments_id_'+str(count)
+        
+        count=count+1
+        if(request.user.username in i.liked_by['liked_by']):
+            spec['liked']=True
+        else:
+            spec['liked']=False
+                
+        temp.append(spec)
+     
+    for i in temp:
+        print(i['person_name']) 
+    
+    temp.sort(key=itemgetter('time_posted'),reverse=True)
+
+    
+    for i in temp:
+        refe=str(datetime.now()-parser.parse(i['time_posted']))
+        print('---------------------')
+        print(datetime.now())
+        print(parser.parse(i['time_posted']))
+        print(i['time_posted']+ '  '+i['text'])
+        print(refe)
+        print('---------------------')
+        if(refe.find('day') != -1):
+            jag=''
+            for j in refe:
+                if(j == ' '):
+                    break
+                jag=jag+j
+                
+            if(int(str(jag)) == 1):
+                i['time_posted']=str(int(jag))+' day ago'    
+            else:
+                i['time_posted']=str(int(jag))+' days ago'
+                    
+        else:
+            jag=''
+            flag=0
+            done=0
+            for j in refe:
+                
+                if(j == ':'):
+                    if(int(jag) != 0):
+                        if(flag == 0):
+                            if(int(jag) == 1):
+                                i['time_posted']=str(int(jag))+' hour ago'
+                            else:
+                                i['time_posted']=str(int(jag))+' hours ago'   
+                            done=1    
+                            break
+                        else:
+                            if(int(jag) == 1):
+                                i['time_posted']=str(int(jag))+ ' minute ago'
+                            else:
+                                i['time_posted']=str(int(jag))+ ' minutes ago'     
+                            done=1    
+                            break
+                    jag=''     
+                    flag=flag+1       
+                    continue
+                
+                jag=jag+j
+            
+            if(done == 0):
+                ben=jag[0:2]
+                
+                if(int(ben) == 1):
+                    i['time_posted']=str(int(ben))+ ' second ago'
+                else:
+                    i['time_posted']=str(int(ben))+' seconds ago'    
+            
+    
+    temp2=[]
+    
+    for index,i in enumerate(temp):
+        
+        if(index % 3 == 0):
+            jag=[]
+            jag.append(temp[index])
+            if(index+1 < len(temp)):
+                jag.append(temp[index+1])
+  
+            if(index+2 < len(temp)):
+                jag.append(temp[index+2])
+  
+                
+            temp2.append(jag)
+    
+    print(temp2)                
+    return render(request,'my_app/profile_f_u.html',{'posts' : temp2,'person' : person,'nop' : len(temp),
+      'following' : len(person.status['status']['following']),
+      'followers' : len(person.status['status']['followers']),
+      'flag' : flag_present,
+      'forfollowing' : '/follow2/'+str(username)
       })
 
 
