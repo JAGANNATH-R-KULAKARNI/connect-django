@@ -39,6 +39,7 @@ def home_page(request):
     
     posts=Posts.objects.all()
     temp=[]
+    count=0
     for i in posts:
         spec={}
         spec['person_name']=i.person_name
@@ -50,7 +51,11 @@ def home_page(request):
         spec['commentslen']=len(i.comments['comments'])
         spec['post_id']=i.post_id
         spec['likesfun']='homelikes/'+str(i.post_id)
-  
+        spec['count']=count
+        spec['forcaption']='captionbro'+str(count)
+        spec['forPostId']='post_id_'+str(count)
+        spec['forComments']='comments_id_'+str(count)
+          
         if(request.user.username in i.liked_by['liked_by']):
             spec['liked']=True
         else:
@@ -245,6 +250,7 @@ def profile_page(request):
     person=Person.objects.get(name=request.user.username)
     posts=Posts.objects.filter(person_name=person)
     temp=[]
+    count=0
     for i in posts:
         spec={}
         spec['person_name']=i.person_name
@@ -256,7 +262,12 @@ def profile_page(request):
         spec['commentslen']=len(i.comments['comments'])
         spec['post_id']=i.post_id
         spec['likesfun']='profilelikes/'+str(i.post_id)
-  
+        spec['count']=count
+        spec['forcaption']='captionbro'+str(count)
+        spec['forPostId']='post_id_'+str(count)
+        spec['forComments']='comments_id_'+str(count)
+        
+        count=count+1
         if(request.user.username in i.liked_by['liked_by']):
             spec['liked']=True
         else:
