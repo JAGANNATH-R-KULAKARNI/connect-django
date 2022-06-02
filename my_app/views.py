@@ -41,6 +41,17 @@ def home_page(request):
     temp=[]
     count=0
     for i in posts:
+        if(i.person_name == request.user.username):
+            continue
+        
+        t_p=Person.objects.filter(name=request.user.username)[0]
+        
+        if(str(i.person_name)[1:] not in t_p.status['status']['following']):
+            continue
+        
+        print('here inside home page')
+        print(str(i.person_name)[1:])
+        print(t_p.status['status']['following'])
         spec={}
         spec['person_name']=i.person_name
         spec['text']=i.text
@@ -55,7 +66,7 @@ def home_page(request):
         spec['forcaption']='captionbro'+str(count)
         spec['forPostId']='post_id_'+str(count)
         spec['forComments']='comments_id_'+str(count)
-          
+        count=count+1
         if(request.user.username in i.liked_by['liked_by']):
             spec['liked']=True
         else:
@@ -142,9 +153,53 @@ def home_page(request):
                 
             temp2.append(jag)
     
-    print(temp2)                
-    return render(request,'my_app/home.html',{'posts' : temp2,'nop' : len(temp)})
+    print(temp2)
+    person=Person.objects.all()     
+    temp3=[]
+    p_index=0
+    
+    for i in person:
+        if(i.name == request.user.username):
+            continue
+        lol={}
+        lol['name']=i.name
+        lol['bio']=i.bio
+        lol['age']=i.age    
+        lol['gender']=i.gender
+        lol['pic']=i.pic  
+        lol['status']=i.status 
+        lol['p_index']=p_index
+        lol['forfollow']='/follow/'+i.name
+        
+        if(request.user.username in i.status['status']['followers']):
+            continue
+                
+        p_index=p_index+1   
+        temp3.append(lol)
+         
+    return render(request,'my_app/home.html',{'posts' : temp2,'nop' : len(temp),'people' : temp3,'nopeople' : len(temp3)})
 
+
+def follow_person(request,username):
+    follower=Person.objects.filter(name=request.user.username)[0]
+    followee=Person.objects.filter(name=username)[0]
+    
+    try:
+        fw=follower.status['status']['following']
+        fw.append(username)
+        follower.status['status']['following']=fw
+        
+        fl=followee.status['status']['followers']
+        fl.append(request.user.username)
+        followee.status['status']['followers']=fl
+        
+        follower.save()
+        followee.save()
+        messages.success(request,'You just followed '+username)
+    except:
+        messages.info(request,'Something went wrong')
+    
+    return redirect('/')
 
 def profileedit(request):
     if(request.method == 'POST'):
@@ -355,7 +410,10 @@ def profile_page(request):
             temp2.append(jag)
     
     print(temp2)                
-    return render(request,'my_app/profile.html',{'posts' : temp2,'person' : person,'nop' : len(temp)})
+    return render(request,'my_app/profile.html',{'posts' : temp2,'person' : person,'nop' : len(temp),
+      'following' : len(person.status['status']['following']),
+      'followers' : len(person.status['status']['followers'])
+      })
 
 
 def login_page(request):

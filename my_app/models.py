@@ -10,6 +10,10 @@ class Person(models.Model):
     age=models.IntegerField()
     gender=models.CharField(max_length=10)
     pic=models.CharField(max_length=1000,default='')
+    status=models.JSONField(default={"status" : {
+        "followers" : [],
+        "following" : []
+    }})
     
     def __str__(self):
         return '@'+self.name

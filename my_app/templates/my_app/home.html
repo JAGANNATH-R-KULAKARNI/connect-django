@@ -125,7 +125,8 @@
       }
 
       function loadComments(refe){
-console.log(refe.name)
+       
+       console.log(refe.name)
 
        var caption=document.getElementById('captionbro'+refe.name)
        var commentsfooter=document.getElementById('commentsfooter')
@@ -273,50 +274,61 @@ console.log(refe.name)
     <br/>
     <br/>
     <br/>
+{% if nopeople != 0 %}
     <h2 style="width:100%;text-align:center;text-decoration:underline;font-weight:900;padding-top:50px">Follow People</h2>
     <div style="display:flex;justify-content:center;">
       <a  href="#carouselExampleIndicators" role="button" data-slide="prev">
-    <button type="button" class="btn btn-primary" style="margin-top:20px">Prev</button>
+    <button type="button" class="btn btn-primary" style="margin-top:20px;background-color:#003869">< Prev </button>
   </a>
   <a  href="#carouselExampleIndicators" role="button" data-slide="next">
 
-        <button type="button" class="btn btn-primary" style="margin-top:20px">Next</button>
+        <button type="button" class="btn btn-primary" style="margin-top:20px;background-color:#003869">Next ></button>
   </a>
 </div>
-    <div style="width:100%;display:flex;justify-content:center;padding-top:20px;height:350px">
+    <div style="width:100%;display:flex;justify-content:center;padding-top:20px;height:340px">
     <br/>
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-  {% comment %} <ol class="carousel-indicators">
-    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-  </ol> {% endcomment %}
+
   <div class="carousel-inner">
+    {% for i in people%}
+    {% if i.p_index == 0 %}
     <div class="carousel-item active">
-   <div class="card" style="width: 18rem;max-height:300px'min-height:300px">
-  <img class="card-img-top" src="https://res.cloudinary.com/dcqnau1ur/image/upload/v1654156319/cwm1swmwnseucirrig31.jpg" alt="Card image cap" style="min-height:50%;max-height:50%">
+   <div class="card" style="width: 18rem;max-height:300px;min-height:300px">
+      <h5 class="card-title" style="width:100%;text-align:center;padding-top:5px;font-weight:900">@{{i.name}}</h5>
+  <img class="card-img-top" src="{{i.pic}}" alt="Card image cap" style="min-height:50%;max-height:50%">
   <div class="card-body">
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <p class="card-text" style="text-align:center">#{{i.bio}}</p>
   </div>
+   <div style="display:flex;justify-content:center;margin-top:0px">
+     <a href="{{i.forfollow}}" style="width:50%">
+    <button type="button" class="btn btn-success"  style="background-color:#003869;width:100%">Follow</button>
+    </a>
+       <button type="button" class="btn btn-dark" style="background-color:#003869;width:50%">Profile</button>
+       </div>
 </div> </div>
-    <div class="carousel-item">
-   <div class="card" style="width: 18rem;max-height:300px'min-height:300px">
-  <img class="card-img-top" src="https://res.cloudinary.com/dcqnau1ur/image/upload/v1654155642/lqkyfs1udvtll7rlqrtu.jpg" alt="Card image cap" style="min-height:50%;max-height:50%">
+{% else %}
+  <div class="carousel-item">
+   <div class="card" style="width: 18rem;max-height:300px;min-height:300px">
+      <h5 class="card-title" style="width:100%;text-align:center;padding-top:5px;font-weight:900">@{{i.name}}</h5>
+  <img class="card-img-top" src="{{i.pic}}" alt="Card image cap" style="min-height:50%;max-height:50%">
   <div class="card-body">
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <p class="card-text">#{{i.bio}} </p>
+    
   </div>
+     <div style="display:flex;justify-content:center;margin-top:0px">
+          <a href="{{i.forfollow}}" style="width:50%">
+    <button type="button" class="btn btn-success"  style="background-color:#003869;width:100%">Follow</button>
+          </a>
+       <button type="button" class="btn btn-dark" style="background-color:#003869;width:50%">Profile</button>
+       </div>
 </div> </div>
-    <div class="carousel-item">
-  <div class="card" style="width: 18rem;max-height:300px'min-height:300px">
-  <img class="card-img-top" src="https://res.cloudinary.com/dcqnau1ur/image/upload/v1654144275/gsbm7ze1182maezvjijs.jpg" alt="Card image cap" style="min-height:50%;max-height:50%">
-  <div class="card-body">
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-  </div>
-</div></div>
+{% endif %}
+   {% endfor %}
   </div>
 
 </div>
  </div>
+{% endif %}
     <br />
     <div
       class="modal fade"
@@ -385,7 +397,8 @@ console.log(refe.name)
             >
               Discard
             </button>
-            <button type="submit" class="btn btn-primary"  style="background-color: #003869 !important">Post</button>
+            <button type="submit" class="btn btn-primary"  style="background-color: #003869 !important">
+               Post</button>
           </div>
         </div>
       </div>
@@ -507,7 +520,7 @@ console.log(refe.name)
         data-toggle="modal"
         data-target="#exampleModal"
       >
-        Post
+        Create a Post
       </button>
 
     </div>
@@ -518,7 +531,7 @@ console.log(refe.name)
     {% for i in posts  %}
      <div class="container">
   <div class="row" >
-   <div class="col-sm" style="display:flex;justify-content:center">
+   <div class="col-sm" style="display:flex;justify-content:center;max-height:370px">
  <div class="card" style="width: 18rem;">
      <h5 class="card-title" style="width:100%;text-align:center;padding-top:5px;font-weight:900">{{i.0.person_name}}</h5>
   <img class="card-img-top" src={{i.0.media_link}} alt="Card image cap" style="min-height:55%;max-height:60%">
@@ -567,7 +580,7 @@ console.log(refe.name)
 </div>
     </div>
     {% if i.1.person_name %}
-   <div class="col-sm" style="display:flex;justify-content:center">
+   <div class="col-sm" style="display:flex;justify-content:center;max-height:370px">
  <div class="card" style="width: 18rem;">
      <h5 class="card-title" style="width:100%;text-align:center;padding-top:5px;font-weight:900">{{i.1.person_name}}</h5>
   <img class="card-img-top" src={{i.1.media_link}} alt="Card image cap" style="min-height:55%;max-height:60%">
@@ -615,7 +628,7 @@ onclick="loadComments(this);" name="{{i.1.count}}">
     </div>
     {% endif %}
     {% if i.2.person_name %}
-    <div class="col-sm" style="display:flex;justify-content:center">
+    <div class="col-sm" style="display:flex;justify-content:center;max-height:370px">
  <div class="card" style="width: 18rem;">
      <h5 class="card-title" style="width:100%;text-align:center;padding-top:5px;font-weight:900">{{i.2.person_name}}</h5>
   <img class="card-img-top" src={{i.2.media_link}} alt="Card image cap" style="min-height:55%;max-height:60%">
