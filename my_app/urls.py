@@ -7,6 +7,7 @@ urlpatterns=[
            path('profile',views.profile_page,name='profile_page'),
            path('profileedit',views.profileedit,name='profileedit'),
            path('profilelikes/<post_id>',views.profilelikes,name='profilelikes'),
+           path('homelikes/<post_id>',views.homelikes,name='home_likes'),
            path('comments',views.comments_page,name='comments'),
            path('signup',views.signup_page,name='signup_page'),
       path('logout',views.log_out,name='logout_page'),

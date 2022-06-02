@@ -6,6 +6,12 @@
   background-color: black !important;
 }
 
+.mic {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .parallax {
   background-image: url("https://d2j6dbq0eux0bg.cloudfront.net/images/34717072/1618960719.jpg");
 
@@ -30,6 +36,29 @@
 }
 .colimageonly:hover {
   opacity: 1 !important;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  height: 100px;
+  width: 100px;
+  outline: black;
+  background-size: 100%, 100%;
+  border-radius: 50%;
+  border: 1px solid black;
+  background-image: none;
+}
+
+.carousel-control-next-icon:after {
+  content: ">";
+  font-size: 55px;
+  color: red;
+}
+
+.carousel-control-prev-icon:after {
+  content: "<";
+  font-size: 55px;
+  color: red;
 }
 
 .nopaddingrow {

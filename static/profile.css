@@ -73,7 +73,15 @@
   padding-right: 10%;
 }
 
+.comments_bro {
+  font-size: 10px !important;
+}
+
 @media only screen and (max-width: 450px) {
+  .comments_bro {
+    font-size: 10px !important;
+  }
+
   .topinfo {
     padding-top: 30%;
   }

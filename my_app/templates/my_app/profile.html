@@ -129,7 +129,7 @@
        var commentsfooter=document.getElementById('commentsfooter')
        var comments=document.getElementById('comments'+index)
        var commentssection=document.getElementById('commentsbro')
-      var post_id=document.getElementById('post_id_0')
+      var post_id=document.getElementById('post_id_'+index)
       var post_id_modal=document.getElementById('post_id_of_modal')
 
        commentsfooter.innerHTML=caption.innerHTML
@@ -298,7 +298,7 @@
               <div class="micfd">
                 <div>
                   <p class="userinfop">
-                    Posts <span class="userinfop0">0</span>
+                    Posts <span class="userinfop0">{{nop}}</span>
                   </p>
                 </div>
                 <div class="userinfowidth"></div>
@@ -489,6 +489,7 @@
     <div class="modal fade" id="commentssection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <form action="/comments" method="post">
         {%csrf_token%}
+           <input type="hidden" name="which_page_comment" value="profile"/>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header"> 
@@ -551,15 +552,23 @@
   <div style="display:block;justify-content:center">
 {% for i in i.0.comments%}
 <div class="alert alert-dark" role="alert">
- <span style="font-weight:900;font:bold">@{{i.by}} :</span> {{i.c}} 
+ <img src="{{i.pic}}"
+ style="width:50px;height:50px;border-radius:50%"
+ /><span style="font-weight:900;font:bold;margin-left:20px">@{{i.by}} :</span> {{i.c}} 
 </div>
 {% endfor %}
+{% if i.0.commentslen == 0 %}
+<p style="font-weight:900">No Comments Yet</p>
+{% endif %}
   </div>
 </div>
 <div style="width:60%">
     <p style="font-size:13px;text-align:center;margin-top:10px">{{i.0.time_posted}}</p>
 </div>
-<button type="button" class="btn btn-success" style="max-height:40px" data-toggle="modal" data-target="#commentssection" onclick="loadComments(0);">Comments</button>
+<button type="button" class="btn btn-success" style="max-height:40px" data-toggle="modal" data-target="#commentssection" onclick="loadComments(0);">
+  Comments  <span class="badge badge-light">{{i.0.commentslen}}</span>
+
+</button>
 </div>
   </div>
 </div>
@@ -571,12 +580,10 @@
   <img class="card-img-top" src={{i.1.media_link}} alt="Card image cap" style="min-height:55%;max-height:60%">
   <div class="card-body">
    
-    <p class="card-text" style="text-align:center">"{{i.1.text}}"</p>
+    <p class="card-text" style="text-align:center" id="caption1">"{{i.1.text}}"</p>
     
-  
-
   <div class="mic cursorchnage">
-     <p style="font-size:20px;margin-top:7px">  {{i.1.likes}}</p>
+<p style="font-size:20px;margin-top:7px">  {{i.1.likes}}</p>
     <a href="{{i.1.likesfun}}">
       {% if i.1.liked %}
 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="margin-top:7px" fill="currentColor" class="bi bi-hand-thumbs-up-fill" viewBox="0 0 16 16">
@@ -588,10 +595,26 @@
 </svg>
 {% endif %}
 </a>
+<input  type="hidden" value="{{i.1.post_id}}" id="post_id_1"/>
+<div style="display:none" id="comments1">
+  <div style="display:block;justify-content:center">
+{% for i in i.1.comments%}
+<div class="alert alert-dark" role="alert">
+ <img src="{{i.pic}}"
+ style="width:50px;height:50px;border-radius:50%"
+ /><span style="font-weight:900;font:bold;margin-left:20px">@{{i.by}} :</span> {{i.c}} 
+</div>
+{% endfor %}
+{% if i.1.commentslen == 0 %}
+<p style="font-weight:900">No Comments Yet</p>
+{% endif %}
+  </div>
+</div>
 <div style="width:60%">
     <p style="font-size:13px;text-align:center;margin-top:10px">{{i.1.time_posted}}</p>
 </div>
-<button type="button" class="btn btn-success" style="max-height:40px">Comments</button>
+<button type="button" class="btn btn-success" style="max-height:40px" data-toggle="modal" data-target="#commentssection" onclick="loadComments(1);">
+  Comments  <span class="badge badge-light">{{i.1.commentslen}}</span></button>
 </div>
   </div>
 </div>
@@ -604,12 +627,10 @@
   <img class="card-img-top" src={{i.2.media_link}} alt="Card image cap" style="min-height:55%;max-height:60%">
   <div class="card-body">
    
-    <p class="card-text" style="text-align:center">"{{i.2.text}}"</p>
+    <p class="card-text" style="text-align:center" id="caption2">"{{i.2.text}}"</p>
     
-  
-
   <div class="mic cursorchnage">
-  <p style="font-size:20px;margin-top:7px">  {{i.2.likes}}</p>
+<p style="font-size:20px;margin-top:7px">  {{i.2.likes}}</p>
     <a href="{{i.2.likesfun}}">
       {% if i.2.liked %}
 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" style="margin-top:7px" fill="currentColor" class="bi bi-hand-thumbs-up-fill" viewBox="0 0 16 16">
@@ -621,10 +642,27 @@
 </svg>
 {% endif %}
 </a>
+<input  type="hidden" value="{{i.2.post_id}}" id="post_id_2"/>
+<div style="display:none" id="comments2">
+  <div style="display:block;justify-content:center">
+{% for i in i.2.comments%}
+<div class="alert alert-dark" role="alert">
+ <img src="{{i.pic}}"
+ style="width:50px;height:50px;border-radius:50%"
+ /><span style="font-weight:900;font:bold;margin-left:20px">@{{i.by}} :</span> {{i.c}} 
+</div>
+{% endfor %}
+{% if i.2.commentslen == 0 %}
+<p style="font-weight:900">No Comments Yet</p>
+{% endif %}
+  </div>
+</div>
 <div style="width:60%">
     <p style="font-size:13px;text-align:center;margin-top:10px">{{i.2.time_posted}}</p>
 </div>
-<button type="button" class="btn btn-success" style="max-height:40px">Comments</button>
+<button type="button" class="btn btn-success" style="max-height:40px" data-toggle="modal" data-target="#commentssection" onclick="loadComments(2);">
+  Comments  <span class="badge badge-light">{{i.2.commentslen}}</span>
+</button>
 </div>
   </div>
 </div>
